@@ -23,6 +23,7 @@ class S3Storage(FileStorage):
 
         self.access_key = s3_config['access_key']
         self.secret_access_key = s3_config['secret_access_key']
+        self.profile = s3_config['profile']
         self.bucket_name = s3_config['bucket']
         self.prefix = s3_config['prefix']
 
@@ -100,12 +101,19 @@ class S3Storage(FileStorage):
         boto3 = self._get_boto3()
         if not boto3:
             return
-
-        self.client = boto3.client(
+        if self.profile:
+            self.client = boto3.client(
             's3',
-            aws_access_key_id=self.access_key,
-            aws_secret_access_key=self.secret_access_key,
+            aws_profile=self.profile
+            
         )
+        else:
+            self.client = boto3.client(
+                's3',
+                aws_access_key_id=self.access_key,
+                aws_secret_access_key=self.secret_access_key,
+
+            )
 
     def _get_boto3(self):
         """Used for mocking purposes."""
