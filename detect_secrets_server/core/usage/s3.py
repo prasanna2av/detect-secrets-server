@@ -111,6 +111,7 @@ class S3Options(object):
             'creds_filename': creds_filename,
             'access_key': creds['accessKeyId'],
             'secret_access_key': creds['secretAccessKey'],
+            'profile': creds['profile']
         }
 
 
